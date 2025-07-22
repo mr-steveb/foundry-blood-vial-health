@@ -1,19 +1,28 @@
 {
   "id": "blood-vial-health",
   "title": "Blood Vial Health Bars",
-  "description": "Gothic blood vial health bars perfect for Curse of Strahd campaigns",
+  "description": "Gothic blood vial health bars perfect for D&D 5e and Curse of Strahd campaigns",
   "version": "1.0.0",
   "authors": [
     {
-      "name": "Your Name",
-      "email": "your.email@example.com"
+      "name": "zbovets",
+      "email": "conftwow1@gmail.com"
     }
   ],
   "compatibility": {
     "minimum": "11",
-    "verified": "11",
+    "verified": "12",
     "maximum": "12"
   },
+  "systems": [
+    {
+      "id": "dnd5e",
+      "compatibility": {
+        "minimum": "2.0.0",
+        "verified": "3.3.1"
+      }
+    }
+  ],
   "esmodules": [
     "scripts/blood-vial.js"
   ],
@@ -35,5 +44,11 @@
       "type": "icon",
       "url": "assets/icon.png"
     }
-  ]
+  ],
+  "flags": {
+    "hotReload": {
+      "extensions": ["css", "js", "json"],
+      "paths": ["scripts", "styles", "lang"]
+    }
+  }
 }

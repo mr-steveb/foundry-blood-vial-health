@@ -1,0 +1,24 @@
+{
+  "blood-vial-health": {
+    "settings": {
+      "enableTokens": {
+        "name": "Enable for Tokens",
+        "hint": "Replace token health bars with gothic blood vials"
+      },
+      "enableActorSheets": {
+        "name": "Enable for Actor Sheets",
+        "hint": "Add blood vials to D&D 5e character sheets"
+      },
+      "enableBubbles": {
+        "name": "Enable Blood Bubbles",
+        "hint": "Show animated bubbles rising in the blood vials for extra gothic effect"
+      }
+    },
+    "notifications": {
+      "systemNotSupported": "Blood Vial Health Bars only supports D&D 5e system",
+      "moduleReady": "Blood vials ready for your gothic campaign!",
+      "errorCreatingVial": "Error creating blood vial health bar",
+      "invalidHPData": "Actor has invalid or missing HP data"
+    }
+  }
+}
