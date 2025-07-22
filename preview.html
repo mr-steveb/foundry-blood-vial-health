@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Vial Health Bar Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #ffffff;
+            font-family: 'Cinzel', serif;
+            padding: 40px;
+            margin: 0;
+        }
+
+        .preview-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #2a2a2a;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            text-align: center;
+            color: #DC143C;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .health-demo {
+            margin: 20px 0;
+            padding: 15px;
+            background: #333;
+            border-radius: 5px;
+            border-left: 4px solid #8B4513;
+        }
+
+        .health-label {
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .controls {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .slider {
+            width: 300px;
+            margin: 10px;
+        }
+
+        .test-button {
+            background: #8B0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            transition: background 0.3s;
+        }
+
+        .test-button:hover {
+            background: #DC143C;
+        }
+
+        /* Blood Vial Health Bar Styles */
+        .blood-vial-container {
+            position: relative;
+            width: 120px;
+            height: 20px;
+            background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+            border: 2px solid #8B4513;
+            border-radius: 15px;
+            box-shadow: 
+                inset 0 2px 4px rgba(0,0,0,0.8),
+                0 1px 2px rgba(139, 69, 19, 0.4);
+            overflow: hidden;
+            margin: 2px 0;
+            font-family: 'Cinzel', serif;
+        }
+
+        .blood-vial-container::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255,255,255,0.3) 30%, 
+                rgba(255,255,255,0.2) 60%, 
+                transparent 100%);
+            border-radius: 10px;
+            z-index: 10;
+        }
+
+        .blood-liquid {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #8B0000, #DC143C, #8B0000);
+            background-size: 200% 100%;
+            animation: bloodFlow 3s ease-in-out infinite;
+            border-radius: 12px;
+            box-shadow: 
+                inset 0 -2px 4px rgba(0,0,0,0.3),
+                inset 0 2px 4px rgba(255,20,20,0.3);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Create wavy top edge using border-radius and transform */
+            border-top-left-radius: 50% 8px;
+            border-top-right-radius: 50% 12px;
+            transform-origin: top center;
+            animation: bloodFlow 3s ease-in-out infinite, liquidWave 2s ease-in-out infinite;
+        }
+
+        /* Remove the complex pseudo-elements */
+        .blood-liquid::after,
+        .blood-liquid::before {
+            display: none;
+        }
+
+        /* Health-based color variations */
+        .blood-liquid.critical {
+            background: linear-gradient(90deg, #4A0000, #8B0000, #4A0000);
+            animation: bloodPulse 1s ease-in-out infinite, bloodFlow 3s ease-in-out infinite;
+        }
+
+        .blood-liquid.wounded {
+            background: linear-gradient(90deg, #6B0000, #B22222, #6B0000);
+        }
+
+        .blood-liquid.healthy {
+            background: linear-gradient(90deg, #8B0000, #DC143C, #FF1493);
+        }
+
+        .blood-liquid.full {
+            background: linear-gradient(90deg, #DC143C, #FF1493, #FF69B4);
+            box-shadow: 
+                inset 0 -2px 4px rgba(0,0,0,0.3),
+                inset 0 2px 4px rgba(255,20,147,0.4),
+                0 0 8px rgba(220,20,60,0.3);
+        }
+
+        /* Enhanced Bubble animations */
+        .blood-bubble {
+            position: absolute;
+            background: radial-gradient(circle at 30% 30%, 
+                rgba(255,100,100,0.9), 
+                rgba(255,50,50,0.7), 
+                rgba(139,0,0,0.4));
+            border-radius: 50%;
+            animation: bubbleRise 2s infinite linear;
+            opacity: 0;
+            box-shadow: 
+                inset 1px 1px 2px rgba(255,255,255,0.4),
+                0 0 3px rgba(255,20,20,0.3);
+        }
+
+        .blood-bubble:nth-child(1) {
+            width: 5px;
+            height: 5px;
+            left: 15%;
+            animation-delay: 0s;
+            animation-duration: 2.8s;
+        }
+
+        .blood-bubble:nth-child(2) {
+            width: 4px;
+            height: 4px;
+            left: 45%;
+            animation-delay: 1.2s;
+            animation-duration: 3.2s;
+        }
+
+        .blood-bubble:nth-child(3) {
+            width: 6px;
+            height: 6px;
+            left: 75%;
+            animation-delay: 2.1s;
+            animation-duration: 2.5s;
+        }
+
+        .blood-bubble:nth-child(4) {
+            width: 3px;
+            height: 3px;
+            left: 60%;
+            animation-delay: 0.5s;
+            animation-duration: 3.5s;
+        }
+
+        .blood-bubble:nth-child(5) {
+            width: 4px;
+            height: 4px;
+            left: 30%;
+            animation-delay: 1.8s;
+            animation-duration: 2.9s;
+        }
+
+        /* Animations */
+        @keyframes bloodFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes bloodPulse {
+            0%, 100% { 
+                box-shadow: 
+                    inset 0 -2px 4px rgba(0,0,0,0.3),
+                    inset 0 2px 4px rgba(255,20,20,0.3),
+                    0 0 5px rgba(139,0,0,0.5);
+            }
+            50% { 
+                box-shadow: 
+                    inset 0 -2px 4px rgba(0,0,0,0.3),
+                    inset 0 2px 4px rgba(255,20,20,0.6),
+                    0 0 15px rgba(139,0,0,0.8);
+            }
+        }
+
+        @keyframes bubbleRise {
+            0% {
+                bottom: 0;
+                opacity: 0;
+                transform: translateX(0) scale(0.3);
+            }
+            10% {
+                opacity: 0.8;
+            }
+            30% {
+                opacity: 1;
+                transform: translateX(2px) scale(0.8);
+            }
+            70% {
+                opacity: 0.9;
+                transform: translateX(-2px) scale(1.1);
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                bottom: 100%;
+                opacity: 0;
+                transform: translateX(8px) scale(1.3);
+            }
+        }
+
+        @keyframes liquidWave {
+            0% {
+                border-top-left-radius: 50% 6px;
+                border-top-right-radius: 50% 10px;
+            }
+            25% {
+                border-top-left-radius: 30% 12px;
+                border-top-right-radius: 70% 6px;
+            }
+            50% {
+                border-top-left-radius: 60% 8px;
+                border-top-right-radius: 40% 14px;
+            }
+            75% {
+                border-top-left-radius: 40% 10px;
+                border-top-right-radius: 60% 4px;
+            }
+            100% {
+                border-top-left-radius: 50% 6px;
+                border-top-right-radius: 50% 10px;
+            }
+        }
+
+        .blood-vial-container::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(45deg, #654321, #8B4513, #654321);
+            border-radius: 16px;
+            z-index: -1;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <h1>🩸 Blood Vial Health Bars 🩸</h1>
+        
+        <div class="health-demo">
+            <div class="health-label">Full Health (100%)</div>
+            <div class="blood-vial-container">
+                <div class="blood-liquid full" style="width: 100%;">
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="health-demo">
+            <div class="health-label">Healthy (75%)</div>
+            <div class="blood-vial-container">
+                <div class="blood-liquid healthy" style="width: 75%;">
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="health-demo">
+            <div class="health-label">Wounded (50%)</div>
+            <div class="blood-vial-container">
+                <div class="blood-liquid wounded" style="width: 50%;">
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="health-demo">
+            <div class="health-label">Critical (25%) - Notice the pulsing!</div>
+            <div class="blood-vial-container">
+                <div class="blood-liquid critical" style="width: 25%;">
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="health-demo">
+            <div class="health-label">Near Death (5%)</div>
+            <div class="blood-vial-container">
+                <div class="blood-liquid critical" style="width: 5%;">
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                    <div class="blood-bubble"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <h3>Interactive Test</h3>
+            <div class="health-demo">
+                <div class="health-label">Adjustable Health: <span id="healthText">100 / 100 HP</span></div>
+                <div class="blood-vial-container" id="testVial">
+                    <div class="blood-liquid full" style="width: 100%;">
+                        <div class="blood-bubble"></div>
+                        <div class="blood-bubble"></div>
+                        <div class="blood-bubble"></div>
+                        <div class="blood-bubble"></div>
+                        <div class="blood-bubble"></div>
+                    </div>
+                </div>
+                <br>
+                <input type="range" class="slider" id="healthSlider" min="0" max="100" value="100">
+                <br>
+                <button class="test-button" onclick="animateHealthLoss()">Simulate Damage</button>
+                <button class="test-button" onclick="animateHealing()">Simulate Healing</button>
+                <button class="test-button" onclick="resetHealth()">Full Heal</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementById('healthSlider');
+        const testVial = document.getElementById('testVial');
+        const liquid = testVial.querySelector('.blood-liquid');
+        const healthText = document.getElementById('healthText');
+        const maxHealth = 100;
+
+        function updateHealthBar(percentage) {
+            liquid.style.width = `${percentage}%`;
+            
+            // Remove existing health classes
+            liquid.classList.remove('critical', 'wounded', 'healthy', 'full');
+            
+            // Add appropriate health class
+            if (percentage <= 25) {
+                liquid.classList.add('critical');
+            } else if (percentage <= 50) {
+                liquid.classList.add('wounded');
+            } else if (percentage < 100) {
+                liquid.classList.add('healthy');
+            } else {
+                liquid.classList.add('full');
+            }
+            
+            const currentHP = Math.round((percentage / 100) * maxHealth);
+            healthText.textContent = `${currentHP} / ${maxHealth} HP`;
+        }
+
+        slider.addEventListener('input', (e) => {
+            updateHealthBar(parseInt(e.target.value));
+        });
+
+        function animateHealthLoss() {
+            const currentValue = parseInt(slider.value);
+            const targetValue = Math.max(0, currentValue - 20);
+            animateSlider(currentValue, targetValue, 1000);
+        }
+
+        function animateHealing() {
+            const currentValue = parseInt(slider.value);
+            const targetValue = Math.min(100, currentValue + 25);
+            animateSlider(currentValue, targetValue, 800);
+        }
+
+        function resetHealth() {
+            animateSlider(parseInt(slider.value), 100, 1200);
+        }
+
+        function animateSlider(start, end, duration) {
+            const startTime = performance.now();
+            
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function for smooth animation
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                
+                const value = start + (end - start) * easeOut;
+                slider.value = Math.round(value);
+                updateHealthBar(Math.round(value));
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>
