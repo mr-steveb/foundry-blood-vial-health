@@ -7,7 +7,7 @@ on:
       - 'v*.*.*'
 permissions:
   contents: write
-    actions: read
+  actions: read
 
 jobs:
   release:
