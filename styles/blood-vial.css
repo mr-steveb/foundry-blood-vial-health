@@ -1,0 +1,166 @@
+/* Blood Vial Health Bar Styles */
+.blood-vial-container {
+    position: relative;
+    width: 120px;
+    height: 20px;
+    background: linear-gradient(45deg, #2a2a2a, #1a1a1a);
+    border: 2px solid #8B4513;
+    border-radius: 15px;
+    box-shadow: 
+        inset 0 2px 4px rgba(0,0,0,0.8),
+        0 1px 2px rgba(139, 69, 19, 0.4);
+    overflow: hidden;
+    margin: 2px 0;
+    font-family: 'Cinzel', serif;
+}
+
+.blood-vial-container::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.3) 30%, 
+        rgba(255,255,255,0.2) 60%, 
+        transparent 100%);
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.blood-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(90deg, #8B0000, #DC143C, #8B0000);
+    background-size: 200% 100%;
+    animation: bloodFlow 3s ease-in-out infinite;
+    border-radius: 12px;
+    box-shadow: 
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        inset 0 2px 4px rgba(255,20,20,0.3);
+}
+
+/* Health-based color variations */
+.blood-liquid.critical {
+    background: linear-gradient(90deg, #4A0000, #8B0000, #4A0000);
+    animation: bloodPulse 1s ease-in-out infinite, bloodFlow 3s ease-in-out infinite;
+}
+
+.blood-liquid.wounded {
+    background: linear-gradient(90deg, #6B0000, #B22222, #6B0000);
+}
+
+.blood-liquid.healthy {
+    background: linear-gradient(90deg, #8B0000, #DC143C, #FF1493);
+}
+
+.blood-liquid.full {
+    background: linear-gradient(90deg, #DC143C, #FF1493, #FF69B4);
+    box-shadow: 
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        inset 0 2px 4px rgba(255,20,147,0.4),
+        0 0 8px rgba(220,20,60,0.3);
+}
+
+/* Bubble animations */
+.blood-bubble {
+    position: absolute;
+    background: radial-gradient(circle, rgba(255,20,20,0.6), rgba(139,0,0,0.3));
+    border-radius: 50%;
+    animation: bubbleRise 2s infinite linear;
+    opacity: 0;
+}
+
+.blood-bubble:nth-child(1) {
+    width: 3px;
+    height: 3px;
+    left: 20%;
+    animation-delay: 0s;
+    animation-duration: 2.5s;
+}
+
+.blood-bubble:nth-child(2) {
+    width: 2px;
+    height: 2px;
+    left: 60%;
+    animation-delay: 0.8s;
+    animation-duration: 3s;
+}
+
+.blood-bubble:nth-child(3) {
+    width: 4px;
+    height: 4px;
+    left: 80%;
+    animation-delay: 1.5s;
+    animation-duration: 2.2s;
+}
+
+/* Animations */
+@keyframes bloodFlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes bloodPulse {
+    0%, 100% { 
+        box-shadow: 
+            inset 0 -2px 4px rgba(0,0,0,0.3),
+            inset 0 2px 4px rgba(255,20,20,0.3),
+            0 0 5px rgba(139,0,0,0.5);
+    }
+    50% { 
+        box-shadow: 
+            inset 0 -2px 4px rgba(0,0,0,0.3),
+            inset 0 2px 4px rgba(255,20,20,0.6),
+            0 0 15px rgba(139,0,0,0.8);
+    }
+}
+
+@keyframes bubbleRise {
+    0% {
+        bottom: 0;
+        opacity: 0;
+        transform: translateX(0) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 0.7;
+    }
+    100% {
+        bottom: 100%;
+        opacity: 0;
+        transform: translateX(10px) scale(1.2);
+    }
+}
+
+/* Integration with existing Foundry health bars */
+.token-health .blood-vial-container {
+    margin: 1px auto;
+}
+
+.actor-sheet .blood-vial-container {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+/* Gothic enhancement for the container */
+.blood-vial-container::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: linear-gradient(45deg, #654321, #8B4513, #654321);
+    border-radius: 16px;
+    z-index: -1;
+    opacity: 0.6;
+}

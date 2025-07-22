@@ -1,0 +1,39 @@
+{
+  "id": "blood-vial-health",
+  "title": "Blood Vial Health Bars",
+  "description": "Gothic blood vial health bars perfect for Curse of Strahd campaigns",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Your Name",
+      "email": "your.email@example.com"
+    }
+  ],
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11",
+    "maximum": "12"
+  },
+  "esmodules": [
+    "scripts/blood-vial.js"
+  ],
+  "styles": [
+    "styles/blood-vial.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "https://github.com/yourusername/foundry-blood-vial-health",
+  "manifest": "https://github.com/yourusername/foundry-blood-vial-health/releases/latest/download/module.json",
+  "download": "https://github.com/yourusername/foundry-blood-vial-health/releases/latest/download/module.zip",
+  "media": [
+    {
+      "type": "icon",
+      "url": "assets/icon.png"
+    }
+  ]
+}
