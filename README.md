@@ -18,7 +18,8 @@ Gothic blood vial health bars for Foundry VTT D&D 5e campaigns, perfect for **Cu
 
 ## 🎬 Preview
 
-![Blood Vial Demo](https://htmlpreview.github.io/?https://gist.github.com/mr-steveb/8512f1574c42ff78b0c3ed0d691a98b7/raw/preview.html)
+**[🖱️ Interactive Demo - Click to Try Live!](https://htmlpreview.github.io/?https://gist.github.com/mr-steveb/8512f1574c42ff78b0c3ed0d691a98b7/raw/preview.html)**
+
 
 ### Health States
 
