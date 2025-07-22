@@ -4,7 +4,7 @@ Gothic blood vial health bars for Foundry VTT D&D 5e campaigns, perfect for **Cu
 
 [![Foundry VTT](https://img.shields.io/badge/Foundry%20VTT-11%2B-green)](https://foundryvtt.com/)
 [![D&D 5e](https://img.shields.io/badge/D%26D%205e-Compatible-red)](https://foundryvtt.com/packages/dnd5e)
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/mr-steveb/foundry-blood-vial-health/releases)
+[![Version](https://img.shields.io/badge/Version-1.0.3-blue)](https://github.com/mr-steveb/foundry-blood-vial-health/releases)
 
 ## ✨ Features
 
