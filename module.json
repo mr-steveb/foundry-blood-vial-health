@@ -1,12 +1,13 @@
 {
   "id": "blood-vial-health",
+  "name": "blood-vial-health",
   "title": "Blood Vial Health Bars",
   "description": "Gothic blood vial health bars perfect for D&D 5e and Curse of Strahd campaigns",
   "version": "1.0.0",
   "authors": [
     {
-      "name": "zbovets",
-      "email": "conftwow1@gmail.com"
+      "name": "Your Name",
+      "email": "your.email@example.com"
     }
   ],
   "compatibility": {
@@ -14,15 +15,18 @@
     "verified": "12",
     "maximum": "12"
   },
-  "systems": [
-    {
-      "id": "dnd5e",
-      "compatibility": {
-        "minimum": "2.0.0",
-        "verified": "3.3.1"
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "manifest": "https://raw.githubusercontent.com/foundryvtt/dnd5e/master/system.json",
+        "compatibility": {
+          "verified": "3.3.1"
+        }
       }
-    }
-  ],
+    ]
+  },
   "esmodules": [
     "scripts/blood-vial.js"
   ],
@@ -38,13 +42,10 @@
   ],
   "url": "https://github.com/mr-steveb/foundry-blood-vial-health",
   "manifest": "https://github.com/mr-steveb/foundry-blood-vial-health/releases/latest/download/module.json",
-  "download": "https://github.com/mr-steveb/foundry-blood-vial-health/releases/latest/download/module.zip",
-  "media": [
-    {
-      "type": "icon",
-      "url": "assets/icon.png"
-    }
-  ],
+  "download": "https://github.com/mr-steveb/foundry-blood-vial-health/releases/latest/download/blood-vial-health.zip",
+  "readme": "https://raw.githubusercontent.com/mr-steveb/foundry-blood-vial-health/main/README.md",
+  "changelog": "https://raw.githubusercontent.com/mr-steveb/foundry-blood-vial-health/main/CHANGELOG.md",
+  "bugs": "https://github.com/mr-steveb/foundry-blood-vial-health/issues",
   "flags": {
     "hotReload": {
       "extensions": ["css", "js", "json"],
