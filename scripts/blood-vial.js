@@ -22,11 +22,13 @@ class BloodVialHealthBar {
         const liquid = document.createElement("div");
         liquid.className = "blood-liquid";
         
-        // Add bubbles for animation
-        for (let i = 0; i < 3; i++) {
-            const bubble = document.createElement("div");
-            bubble.className = "blood-bubble";
-            liquid.appendChild(bubble);
+        // Add bubbles for animation (if enabled)
+        if (game.settings.get(this.MODULE_NAME, "enableBubbles")) {
+            for (let i = 0; i < 5; i++) {
+                const bubble = document.createElement("div");
+                bubble.className = "blood-bubble";
+                liquid.appendChild(bubble);
+            }
         }
 
         container.appendChild(liquid);
@@ -107,6 +109,37 @@ class BloodVialHealthBar {
             input.parentNode.appendChild(bloodVial);
         });
     }
+
+    /**
+     * Update bubble visibility based on settings
+     */
+    static updateBubbleVisibility() {
+        const enableBubbles = game.settings.get(this.MODULE_NAME, "enableBubbles");
+        
+        // Update existing blood vials
+        document.querySelectorAll('.blood-vial-container').forEach(container => {
+            const liquid = container.querySelector('.blood-liquid');
+            if (!liquid) return;
+
+            // Remove existing bubbles
+            liquid.querySelectorAll('.blood-bubble').forEach(bubble => bubble.remove());
+
+            // Add bubbles if enabled
+            if (enableBubbles) {
+                for (let i = 0; i < 5; i++) {
+                    const bubble = document.createElement("div");
+                    bubble.className = "blood-bubble";
+                    liquid.appendChild(bubble);
+                }
+            }
+        });
+
+        // Update CSS custom property for display
+        document.documentElement.style.setProperty(
+            '--bubble-display', 
+            enableBubbles ? 'block' : 'none'
+        );
+    }
 }
 
 // Module initialization
@@ -115,8 +148,8 @@ Hooks.once('init', async function() {
     
     // Register module settings
     game.settings.register(BloodVialHealthBar.MODULE_NAME, "enableTokens", {
-        name: "Enable for Tokens",
-        hint: "Replace token health bars with blood vials",
+        name: game.i18n.localize("blood-vial-health.settings.enableTokens.name"),
+        hint: game.i18n.localize("blood-vial-health.settings.enableTokens.hint"),
         scope: "world",
         config: true,
         type: Boolean,
@@ -125,8 +158,8 @@ Hooks.once('init', async function() {
     });
 
     game.settings.register(BloodVialHealthBar.MODULE_NAME, "enableActorSheets", {
-        name: "Enable for Actor Sheets", 
-        hint: "Add blood vials to actor sheets",
+        name: game.i18n.localize("blood-vial-health.settings.enableActorSheets.name"),
+        hint: game.i18n.localize("blood-vial-health.settings.enableActorSheets.hint"),
         scope: "world",
         config: true,
         type: Boolean,
@@ -135,30 +168,21 @@ Hooks.once('init', async function() {
     });
 
     game.settings.register(BloodVialHealthBar.MODULE_NAME, "enableBubbles", {
-        name: "Enable Bubbles",
-        hint: "Show animated bubbles in the blood vials",
+        name: game.i18n.localize("blood-vial-health.settings.enableBubbles.name"),
+        hint: game.i18n.localize("blood-vial-health.settings.enableBubbles.hint"),
         scope: "world", 
         config: true,
         type: Boolean,
         default: true,
-        onChange: (enabled) => {
-            document.documentElement.style.setProperty(
-                '--bubble-display', 
-                enabled ? 'block' : 'none'
-            );
-        }
+        onChange: () => BloodVialHealthBar.updateBubbleVisibility()
     });
 });
 
 Hooks.once('ready', async function() {
     console.log(`${BloodVialHealthBar.MODULE_TITLE} | Module ready`);
     
-    // Apply bubble setting
-    const enableBubbles = game.settings.get(BloodVialHealthBar.MODULE_NAME, "enableBubbles");
-    document.documentElement.style.setProperty(
-        '--bubble-display', 
-        enableBubbles ? 'block' : 'none'
-    );
+    // Apply initial bubble setting
+    BloodVialHealthBar.updateBubbleVisibility();
 });
 
 // Hook into token updates
