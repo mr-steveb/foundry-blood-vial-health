@@ -1,0 +1,66 @@
+# .github/workflows/release.yml
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Extract version from tag
+      id: extract_version
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+      
+    - name: Update module.json version
+      run: |
+        sed -i 's/"version": ".*"/"version": "${{ steps.extract_version.outputs.version }}"/' module.json
+        
+    - name: Create module package
+      run: |
+        mkdir -p release/blood-vial-health
+        cp module.json release/blood-vial-health/
+        cp -r scripts/ release/blood-vial-health/
+        cp -r styles/ release/blood-vial-health/
+        cp -r lang/ release/blood-vial-health/
+        cp README.md release/blood-vial-health/
+        
+        # Create CHANGELOG if missing
+        if [ ! -f "CHANGELOG.md" ]; then
+          echo "# Changelog" > release/blood-vial-health/CHANGELOG.md
+        else
+          cp CHANGELOG.md release/blood-vial-health/
+        fi
+        
+        cd release
+        zip -r blood-vial-health.zip blood-vial-health/
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Blood Vial Health Bars ${{ steps.extract_version.outputs.tag }}
+        body: |
+          🩸 Blood Vial Health Bars ${{ steps.extract_version.outputs.tag }}
+          
+          ## Installation
+          Use this manifest URL in Foundry VTT:
+          `https://github.com/mr-steveb/foundry-blood-vial-health/releases/latest/download/module.json`
+          
+          Perfect for Curse of Strahd campaigns! 🧛‍♂️
+          
+        files: |
+          release/blood-vial-health.zip
+          module.json
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
