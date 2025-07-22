@@ -1,0 +1,23 @@
+# Build artifacts
+*.zip
+blood-vial-health.zip
+
+# Temporary release directories
+release-temp/
+release/
+
+# Node modules (if you ever add them)
+node_modules/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
