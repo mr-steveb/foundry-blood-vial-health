@@ -142,16 +142,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 *Perfect for when you want your players to feel the dread as their life essence literally drains away...*
 
-## 📊 Changelog
-
-### v1.0.0 (Current)
-- ✨ Initial release
-- 🎨 Gothic blood vial health bars
-- 🌊 Liquid animation effects  
-- 🫧 Animated bubbles
-- ⚙️ Configurable settings
-- 🎯 D&D 5e integration
-
 ---
 
 <div align="center">
